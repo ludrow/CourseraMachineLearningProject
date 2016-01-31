@@ -1,0 +1,78 @@
+---
+title: "Practical Machine Learning Course Project"
+author: "LM"
+date: "31 stycznia 2016"
+output: html_document
+---
+## Introduction
+
+The goal of this project is to create model that predict  the manner in which they did the exercise using giroscopes and accelerators date.
+  
+## getting data 
+Input data is downloaded from presented url:
+```{r,cache=TRUE}
+train.input<-
+  read.csv(url("https://d396qusza40orc.cloudfront.net/predmachlearn/pml-training.csv"),
+           header=TRUE,
+           na.string=c("NA",""))
+test.input<- 
+  read.csv(url("https://d396qusza40orc.cloudfront.net/predmachlearn/pml-testing.csv"),
+           header=TRUE,
+           na.string=c("NA",""))
+```
+
+## Cleaning data
+
+There are a lot of columns that for many of rows. The first row looks like that is representative. First 7 column are identification columns so are not usefull for algorithm.
+```{r,cache=TRUE}
+usable.columns<-c()
+for(i in 1:ncol(train.input))
+{
+  if(is.na(train.input[1,i])==FALSE)
+  {
+    usable.columns<-c(usable.columns,names(train.input[i]))
+
+  }
+}
+
+usable.columns<-usable.columns[c(-1:-7)]
+train.data<-train.input[,usable.columns]
+test.data<-test.input[,usable.columns[usable.columns!="classe"]]
+
+str(train.data)
+```
+
+## Model  
+To create model, data is divided into two parts:  
+1) traning 60%  
+2) testing 40%  
+```{r,cache=TRUE}
+### creating test and train parts
+library(caret)
+inTrain = createDataPartition(y=train.data$classe, p=0.1, list=FALSE)
+train = train.data[inTrain,]
+test = train.data[-inTrain,]
+```
+
+## exploratory analysis
+Polots of first variabiles shows that clasification using random forest will be the best method for this task:
+```{r,cache=TRUE}
+p1<-ggplot(train,aes(roll_belt,pitch_belt,colour=classe))+stat_density2d() +geom_point(aes(colour = factor(classe)))
+p2<-ggplot(train,aes(roll_belt,yaw_belt,colour=classe))+stat_density2d() +geom_point(aes(colour = factor(classe)))
+p3<-ggplot(train,aes(pitch_belt,yaw_belt,colour=classe))+stat_density2d() +geom_point(aes(colour = factor(classe)))
+p1;p2;p3
+pairs(train[1:4],bg = c("red","green3","blue","orange","gray")[unclass(train$classe)],pch=21)
+```
+
+##Model traning and testing
+
+The method for calculations is Random Tree. This method has high timecost but has high accurace.
+```{r,cache=TRUE}
+#library(randomForest)
+#model=train(classe~.,method="rf",data=train)
+#predictResults=predict(model,testing)
+#mean(predictResults==test.data$classe)
+#mean(predict(model, testing) == testing$classe) * 100
+```
+##Conclusion
+Random forest model predict classe of excercise with high accurace and can be usefull for predictions.
