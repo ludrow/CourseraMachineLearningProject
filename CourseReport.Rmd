@@ -5,6 +5,8 @@ date: "31 stycznia 2016"
 output: html_document
 ---
 ## Introduction
+Link to gitHub repository:
+[https://github.com/ludviq/CourseraMachineLearningProject]
 
 The goal of this project is to create model that predict  the manner in which they did the exercise using giroscopes and accelerators date.
   
@@ -46,10 +48,10 @@ str(train.data)
 To create model, data is divided into two parts:  
 1) traning 60%  
 2) testing 40%  
-```{r,cache=TRUE}
+```{r}
 ### creating test and train parts
 library(caret)
-inTrain = createDataPartition(y=train.data$classe, p=0.01, list=FALSE)
+inTrain = createDataPartition(y=train.data$classe, p=0.6, list=FALSE)
 train = train.data[inTrain,]
 test = train.data[-inTrain,]
 ```
@@ -67,7 +69,7 @@ pairs(train[1:4],bg = c("red","green3","blue","orange","gray")[unclass(train$cla
 ##Model traning and testing
 
 The method for calculations is Random Tree. This method has high timecost but has high accurace.
-```{r,cache=TRUE}
+```{r}
 library(randomForest)
 model=train(classe~.,method="rf",data=train)
 predictResults=predict(model,test)

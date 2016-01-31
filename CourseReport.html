@@ -69,6 +69,7 @@ img {
 
 <div id="introduction" class="section level2">
 <h2>Introduction</h2>
+<p>Link to gitHub repository: [<a href="https://github.com/ludviq/CourseraMachineLearningProject" class="uri">https://github.com/ludviq/CourseraMachineLearningProject</a>]</p>
 <p>The goal of this project is to create model that predict the manner in which they did the exercise using giroscopes and accelerators date.</p>
 </div>
 <div id="getting-data" class="section level2">
@@ -161,7 +162,7 @@ str(train.data)</code></pre>
 <p>To create model, data is divided into two parts:<br />1) traning 60%<br />2) testing 40%</p>
 <pre class="r"><code>### creating test and train parts
 library(caret)
-inTrain = createDataPartition(y=train.data$classe, p=0.01, list=FALSE)
+inTrain = createDataPartition(y=train.data$classe, p=0.8, list=FALSE)
 train = train.data[inTrain,]
 test = train.data[-inTrain,]</code></pre>
 </div>
@@ -191,7 +192,7 @@ p1;p2;p3</code></pre>
 <pre class="r"><code>model=train(classe~.,method=&quot;rf&quot;,data=train)
 predictResults=predict(model,test)
 mean(predictResults==test$classe)</code></pre>
-<pre><code>## [1] 0.7539515</code></pre>
+<pre><code>## [1] 0.7493178</code></pre>
 </div>
 <div id="conclusion" class="section level2">
 <h2>Conclusion</h2>
