@@ -8,7 +8,7 @@ output: html_document
 Link to gitHub repository:
 [https://github.com/ludviq/CourseraMachineLearningProject]
 
-The goal of this project is to create model that predict  the manner in which they did the exercise using giroscopes and accelerators date.
+The goal of this project is to create model that predict  the manner in which they did the exercise using giroscopes and accelerators data.
   
 ## getting data 
 Input data is downloaded from presented url:
